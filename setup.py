@@ -25,11 +25,13 @@ setup(name='pymantic',
       test_suite='nose.collector',
       install_requires=[
           "rdflib>=3.0.0",
-          'httplib2',
           'lxml',
-          'mock_http',
           'pytz',
-          'simplejson',
+          'requests',
+          ],
+      tests_require=[
+          "nose",
+          "betamax",
           ],
       entry_points="""
       # -*- Entry points: -*-

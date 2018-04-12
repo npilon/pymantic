@@ -5,12 +5,11 @@ import os.path
 import urlparse
 import re
 import logging
-from cStringIO import StringIO
 from string import Template
 
 import rdflib
 from rdflib.term import URIRef as Original_URIRef
-import httplib2
+import requests
 
 import pymantic.uri_schemes as uri_schemes
 import pymantic.util as util
@@ -585,13 +584,13 @@ def retrieve_resource(graph, subject):
                 cache = graph.http_cache
             else:
                 cache = None
-            http = httplib2.Http(cache=cache)
-            resp, content = http.request(uri=str(publicID), method='GET')
-            if resp['status'] == '200':
-                graph.parse(StringIO(content), publicID=publicID)
+
+            resp = requests.get(str(publicID), stream=True)
+            if resp.status_code == 200:
+                graph.parse(resp.raw, publicID=publicID)
                 graph.retrieved_uris.add(publicID)
             else:
-                log.debug('Could not retrieve %s: %s', publicID, resp['status'])
+                log.debug('Could not retrieve %s: %s', publicID, resp.status_code)
 
 def _valid_retrieve_url(graph, url):
     if hasattr(graph, 'retrieve_http_whitelist'):
