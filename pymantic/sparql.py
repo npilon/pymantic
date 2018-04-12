@@ -194,7 +194,7 @@ def changeset(a,b, graph_uri):
     graph.add((change_set, rdflib.RDF.type, cs["ChangeSet"]))
     graph.add((change_set, cs["createdDate"], rdflib.Literal(datetime.datetime.now(pytz.UTC).isoformat())))
     graph.add((change_set, cs["subjectOfChange"], rdflib.URIRef(graph_uri)))
-    
+
     for stmt in removal:
         statement = reify(graph, stmt)
         graph.add((change_set, cs["removal"], statement))
