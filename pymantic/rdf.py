@@ -232,8 +232,12 @@ class Resource(object):
         return NotImplemented
     
     def __ne__(self, other):
-        return not self.__eq__(other)
-    
+        eq = self.__eq__(other)
+        if eq is NotImplemented:
+            return NotImplemented
+        else:
+            return not eq
+
     def __hash__(self):
         return hash(self.subject)
     
